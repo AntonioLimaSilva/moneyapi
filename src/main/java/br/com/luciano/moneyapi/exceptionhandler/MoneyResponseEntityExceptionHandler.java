@@ -15,6 +15,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.oauth2.common.exceptions.InvalidGrantException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -48,7 +49,7 @@ public class MoneyResponseEntityExceptionHandler extends ResponseEntityException
 	 * @param request
 	 * @return
 	 */
-	@ExceptionHandler({ EmptyResultDataAccessException.class })
+	@ExceptionHandler(EmptyResultDataAccessException.class)
 	public ResponseEntity<Object> handleEmptyResultDataAccessException(EmptyResultDataAccessException ex,
 			WebRequest request) {
 		
@@ -59,7 +60,7 @@ public class MoneyResponseEntityExceptionHandler extends ResponseEntityException
 		return handleExceptionInternal(ex, erros, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
 	}
 	
-	@ExceptionHandler({ DataIntegrityViolationException.class })
+	@ExceptionHandler(DataIntegrityViolationException.class)
 	public ResponseEntity<Object> handleDataIntegrityViolationException(DataIntegrityViolationException ex, 
 			WebRequest request) {
 		
@@ -69,6 +70,19 @@ public class MoneyResponseEntityExceptionHandler extends ResponseEntityException
 		
 		return handleExceptionInternal(ex, erros, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
 	}
+
+	@ExceptionHandler(InvalidGrantException.class)
+	public ResponseEntity<Object> handleInvalidGrantException(InvalidGrantException ex,
+																		WebRequest request) {
+
+		String mensagemUsuario = messageSource.getMessage("session-expirada", null, LocaleContextHolder.getLocale());
+		String mensagemDesenvolvedor = ExceptionUtils.getRootCauseMessage(ex);
+		List<Erro> erros = Arrays.asList(new Erro(mensagemUsuario, mensagemDesenvolvedor));
+
+		return handleExceptionInternal(ex, erros, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+	}
+
+
 	
 	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,

@@ -3,6 +3,8 @@ package br.com.luciano.moneyapi.repository;
 import java.util.Optional;
 
 import br.com.luciano.moneyapi.repository.usuario.UsuariosQueries;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -13,4 +15,5 @@ public interface Usuarios extends JpaRepository<Usuario, Integer>, UsuariosQueri
 	
 	Optional<Usuario> findByEmail(String email);
 
+	Page<Usuario> findByNomeContaining(String nome, Pageable pageable);
 }
