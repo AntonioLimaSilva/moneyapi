@@ -20,7 +20,7 @@ public class Permissao implements Serializable {
 	private Integer id;
 	
 	@Column(length = 50)
-	private String descricao;
+	private String nome;
 
 	public Integer getId() {
 		return id;
@@ -30,12 +30,12 @@ public class Permissao implements Serializable {
 		this.id = id;
 	}
 
-	public String getDescricao() {
-		return descricao;
+	public String getNome() {
+		return nome;
 	}
 
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 
 	@Override

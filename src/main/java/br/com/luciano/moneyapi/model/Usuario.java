@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "usuario")
@@ -33,13 +34,12 @@ public class Usuario implements Serializable {
 	
 	@Column(length = 150)
 	private String senha;
-	
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "usuario_permissao", joinColumns = @JoinColumn(name = "id_usuario", 
-		foreignKey = @ForeignKey(name = "fk_usuario_permissao_usuario")),
-	 inverseJoinColumns = @JoinColumn(name = "id_permissao"), 
-	 	foreignKey = @ForeignKey(name = "fk_usuario_permissao_permissao"))
-	private List<Permissao> permissoes;
+
+	@Size(min = 1, message = "Selecione pelo menos um grupo")
+	@ManyToMany
+	@JoinTable(name = "usuario_grupo", joinColumns = @JoinColumn(name = "id_usuario")
+			, inverseJoinColumns = @JoinColumn(name = "id_grupo"))
+	private List<Grupo> grupos;
 
 	public Integer getId() {
 		return id;
@@ -73,12 +73,12 @@ public class Usuario implements Serializable {
 		this.senha = senha;
 	}
 
-	public List<Permissao> getPermissoes() {
-		return permissoes;
+	public List<Grupo> getGrupos() {
+		return grupos;
 	}
 
-	public void setPermissoes(List<Permissao> permissoes) {
-		this.permissoes = permissoes;
+	public void setGrupos(List<Grupo> grupos) {
+		this.grupos = grupos;
 	}
 
 	@Override
