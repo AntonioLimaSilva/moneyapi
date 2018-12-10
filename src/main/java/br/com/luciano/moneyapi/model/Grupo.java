@@ -1,5 +1,7 @@
 package br.com.luciano.moneyapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
@@ -16,7 +18,8 @@ public class Grupo implements Serializable {
 
     private String nome;
 
-    @ManyToMany
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "grupo_permissao", joinColumns = @JoinColumn(name = "id_grupo"),
             inverseJoinColumns = @JoinColumn(name = "id_permissao"))
     private List<Permissao> permissoes;
