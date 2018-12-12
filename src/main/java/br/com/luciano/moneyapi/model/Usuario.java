@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -17,16 +18,15 @@ public class Usuario implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
+	@NotBlank
 	@Column(length = 100)
 	private String nome;
-	
+	@NotBlank
 	@Column(length = 100)
 	private String email;
-	
+	@NotBlank
 	@Column(length = 150)
 	private String senha;
-
 	@Size(min = 1, message = "Selecione pelo menos um grupo")
 	@ManyToMany
 	@JoinTable(name = "usuario_grupo", joinColumns = @JoinColumn(name = "id_usuario")
